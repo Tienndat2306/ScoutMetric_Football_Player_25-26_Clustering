@@ -1,0 +1,129 @@
+Cap nhat GMM: confidence, covariance_type va ambiguous players
+
+1. Bo sung Cluster Confidence cho GMM
+- Trong run_gmm_clustering, sau khi fit GMM se goi predict_proba(scaled_data).
+- Moi cau thu duoc gan them Cluster_Confidence = xac suat cao nhat trong cac cum.
+- Cluster_Confidence duoc tra ve frontend trong response /api/cluster.
+- Tooltip scatter chart hien thi them Confidence khi du lieu co truong nay.
+- Cluster_Confidence khong duoc dung lam truc X/Y cua scatter chart.
+
+2. Thu nhieu covariance_type cho GMM
+- Bo sung fit_best_gmm_model trong clustering/football_player_clustering.py.
+- GMM hien tai thu cac covariance_type:
+  - full
+  - tied
+  - diag
+  - spherical
+- Voi moi K va moi covariance_type, he thong tinh BIC va AIC.
+- Model GMM duoc chon theo BIC nho nhat.
+- get_gmm_evaluation_data cung da tinh BIC theo covariance_type tot nhat cua tung K.
+
+3. Hien thi cau thu nam giua nhieu cum
+- Neu Cluster_Confidence < 0.65, cau thu duoc xem la ambiguous player.
+- Backend tra ve toi da 10 cau thu co confidence thap nhat trong evaluation.ambiguous_players.
+- Frontend hien thi bang "Cau thu nam giua nhieu cum" trong khu vuc danh gia chat luong.
+
+4. Thong tin model GMM tren frontend
+- evaluation.gmm_info tra ve:
+  - selected_k.
+  - selected_covariance_type.
+  - bic.
+  - aic.
+  - init_params.
+  - initialization_method.
+  - candidate_count.
+- Frontend hien thi card "GMM model" trong khu vuc danh gia.
+
+5. Phuong phap khoi tao ban dau cua GMM
+- GaussianMixture cua scikit-learn trong project dang dung mac dinh init_params = "kmeans".
+- Nghia la cac tham so ban dau cua GMM duoc khoi tao dua tren K-Means truoc khi chay thuat toan EM.
+- Sau khi khoi tao bang K-Means, GMM toi uu cac tham so bang Expectation-Maximization:
+  - E-step: tinh xac suat moi diem thuoc tung Gaussian component.
+  - M-step: cap nhat trong so, mean va covariance cua tung component.
+- random_state = 42 duoc giu de ket qua on dinh hon giua cac lan chay.
+
+6. Kiem tra
+- Da chay python -m py_compile cho clustering/football_player_clustering.py va app/routes.py.
+- Da chay node --check app/static/js/main.js.
+- Da chay thu GMM voi Midfielder / Top 5 League / Style.
+- Ket qua test: selected_k = 2, selected_covariance_type = diag, co Cluster_Confidence, co gmm_info va co ambiguous_players.
+
+Cap nhat giao dien Compare
+
+1. Them route va template so sanh
+- Bo sung route /compare trong app/routes.py.
+- Tao app/templates/compare.html ke thua base.html, dung chung Tailwind config, font, Chart.js va script chung.
+- Giao dien compare da chuyen sang tieng Anh.
+- Loai bo header va sidebar rieng cua code.html de tranh trung cau truc voi UI hien tai.
+
+2. Them luong mo Compare tu menu More
+- Nut ba cham trong chart.html duoc doi thanh menu dropdown.
+- Them lua chon Compare trong menu More canh nut download chart.
+- Link Compare bi lam mo khi chua co ket qua clustering va se kha dung sau khi chay gom cum thanh cong.
+
+3. Truyen du lieu that tu ket qua clustering
+- Sau khi /api/cluster tra ve thanh cong, main.js luu ket qua gom cum vao localStorage voi key scoutmetric:lastClusterResult.
+- Du lieu luu gom params, description, cluster_count, component_features, cluster_components va danh sach cau thu da gan Cluster.
+- compare.js doc du lieu nay de hien thi cau thu, team, league, cluster, confidence va metric thuc.
+
+4. Chuc nang so sanh cau thu
+- Trang compare cho tim cau thu chinh va cau thu bat ky de so sanh.
+- Danh sach Related Players hien cac cau thu cung cum voi cau thu chinh.
+- Co the tim cau thu khac cum bang o Search any player to compare.
+- Radar chart so sanh cac chi so thuc da duoc chuan hoa 0-100 theo tap ket qua clustering.
+- Khu vuc Activity Zone, Attribute Profile va Detailed Metrics Breakdown duoc giu theo noi dung trien khai cua code.html nhung nap bang du lieu that.
+
+5. Kiem tra
+- Da chay python -m py_compile app/routes.py.
+- Da chay node --check app/static/js/main.js.
+- Da chay node --check app/static/js/compare.js.
+- Da render thu bang Flask test client: / tra ve 200, /compare tra ve 200.
+- Da khoi dong Flask local server tai http://127.0.0.1:5000 va kiem tra /compare tra ve HTTP 200.
+
+Cap nhat Compare: composite va full metric breakdown
+
+1. Tach chi so tong hop
+- The player cards trong compare khong con hien thi diem tong hop trung binh mo ho.
+- Uu tien hien thi chi so tong hop co cong thuc ro rang, vi du Expected Output = Non-penalty xG + Expected assists (xA).
+- Neu backend da tra ve cot tong hop nhu Expected Output, Ball Winning Actions, Finishing, Build-up hoac Defending thi dung truc tiep gia tri do.
+- Neu chua co cot tong hop nhung co du cot thanh phan, frontend tu tinh lai theo cong thuc.
+
+2. Tra them tat ca thuoc tinh so sang Compare
+- /api/cluster trong app/routes.py da tra them cac cot numeric tu file thong ke theo vi tri, vi du data/player_stats/midfielder_stats.csv.
+- Cac cot gom cum van duoc dat dau danh sach de scatter chart hien tai tiep tuc dung dung truc X/Y nhu truoc.
+- Loai tru id va cac cot dinh danh khoi danh sach metric hien thi.
+- API tra them selected_features va chart.js uu tien selected_features khi chon truc scatter/summary de khong bi anh huong boi thu tu key JSON.
+
+3. Nhom Detailed Metrics Breakdown
+- compare.js da nhom toan bo numeric metrics thanh 5 nhom:
+  - Shooting
+  - Passing
+  - Possession
+  - Defending
+  - Discipline
+- Radar chart trong Attribute Profile nay so sanh 5 nhom lon thay vi chi lay 8 cot dau tien.
+- Detailed Metrics Breakdown hien tat ca numeric metrics co trong response theo nhom, kem gia tri cua tung cau thu va thanh so sanh chuan hoa.
+
+4. Kiem tra
+- Da chay python -m py_compile app/routes.py.
+- Da chay node --check app/static/js/main.js, app/static/js/chart.js va app/static/js/compare.js.
+- Da render thu / va /compare bang Flask test client, deu tra ve 200.
+- Da goi thu /api/cluster voi Midfielder / Top 5 League / Style / K-Means Manual K=3.
+- Response co selected_features = Expected Output, Ball Winning Actions va 40 numeric metrics cho moi cau thu, gom Non-penalty xG, Expected assists (xA), Goals, Shots, Successful passes, Yellow cards, Red cards.
+
+Sua loi scatter chart voi criteria Duel
+
+1. Nguyen nhan
+- API Duel cho Midfielder va Defender van tra du 2 cot numeric: Aerial duels won va Duels won.
+- Loi "At least two numeric features are required to draw the scatter chart" den tu frontend chart.js.
+- Ham numericFeatureKeys truoc do chi kiem tra typeof rows[0][key] === 'number', nen neu dong dau tien trong response co gia tri null/string numeric thi chart ket luan sai rang khong du cot so.
+
+2. Thay doi
+- chart.js nay xac dinh cot numeric bang cach kiem tra toan bo rows voi Number.isFinite(Number(value)).
+- Khi ve scatter, cac diem co gia tri truc X/Y khong hop le se bi bo qua thay vi lam hong ca chart.
+- Neu khong con diem hop le nao, frontend hien thong bao ro hon: No valid numeric player values are available for the selected chart axes.
+
+3. Kiem tra
+- Da test /api/load_raw_data voi Midfielder va Defender, criteria Duel, tren cac league hien co.
+- Da chay node --check app/static/js/chart.js.
+- Da render thu / va /compare bang Flask test client, deu tra ve 200.

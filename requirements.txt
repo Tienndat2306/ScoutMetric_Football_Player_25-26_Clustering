@@ -1,0 +1,10 @@
+Flask>=3.1
+pandas>=2.3
+numpy>=2.4
+scikit-learn>=1.7
+kneed>=0.8
+selenium>=4.43
+beautifulsoup4>=4.14
+webdriver-manager>=4.0
+matplotlib>=3.10
+scipy>=1.16
