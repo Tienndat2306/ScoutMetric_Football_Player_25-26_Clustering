@@ -71,7 +71,7 @@ flowchart TD
     K --> L[app/static/js/main.js]
     L --> M[app/static/js/chart.js + Chart.js dashboard]
     L --> N[localStorage: last clustering result]
-    N --> O[/compare + app/static/js/compare.js]
+    N --> O[compare + app/static/js/compare.js]
 ```
 
 Data flow:
