@@ -265,13 +265,13 @@ Current local data in `data/player_stats/`:
 
 | File | Players | Columns | Leagues in file |
 |---|---:|---:|---|
-| `defender_stats.csv` | 529 | 48 | Bundesliga, La Liga, Liga Portugal, Ligue 1, Premier League, Serie A |
-| `fullback_stats.csv` | 368 | 48 | Bundesliga, La Liga, Liga Portugal, Ligue 1, Premier League, Serie A |
-| `goalkeeper_stats.csv` | 224 | 23 | Bundesliga, La Liga, Liga Portugal, Ligue 1, Premier League, Serie A |
-| `midfielder_stats.csv` | 665 | 49 | Bundesliga, La Liga, Liga Portugal, Ligue 1, Premier League, Serie A |
-| `striker_stats.csv` | 306 | 48 | Bundesliga, La Liga, Liga Portugal, Ligue 1, Premier League, Serie A |
-| `winger_stats.csv` | 414 | 48 | Bundesliga, La Liga, Liga Portugal, Ligue 1, Premier League, Serie A |
-| **Total** | **2,506** |  |  |
+| `defender_stats.csv` | 455 | 48 | Bundesliga, La Liga, Ligue 1, Premier League, Serie A |
+| `fullback_stats.csv` | 318 | 48 | Bundesliga, La Liga, Ligue 1, Premier League, Serie A |
+| `goalkeeper_stats.csv` | 188 | 23 | Bundesliga, La Liga, Ligue 1, Premier League, Serie A |
+| `midfielder_stats.csv` | 579 | 49 | Bundesliga, La Liga, Ligue 1, Premier League, Serie A |
+| `striker_stats.csv` | 267 | 48 | Bundesliga, La Liga, Ligue 1, Premier League, Serie A |
+| `winger_stats.csv` | 334 | 48 | Bundesliga, La Liga, Ligue 1, Premier League, Serie A |
+| **Total** | **2,141** |  |  |
 
 Collect team and player IDs:
 
