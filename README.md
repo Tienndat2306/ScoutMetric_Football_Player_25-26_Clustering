@@ -554,17 +554,3 @@ Current code style:
 ## License
 
 The repository does not currently include a `LICENSE` file, so the official license is not declared. Before publishing the project on GitHub, add a license file. MIT License is a common choice for portfolio and open-source projects.
-
-## Contact And Citation
-
-Author name, email, and GitHub profile are not declared in the current codebase.
-
-If this project is used in an academic context, cite it as:
-
-```bibtex
-@software{scoutmetric_pro,
-  title = {ScoutMetric Pro: Football Player Clustering Dashboard},
-  year = {2026},
-  note = {Flask and scikit-learn project for football player clustering}
-}
-```
