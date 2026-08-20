@@ -21,7 +21,6 @@
 - [Web Demo / Inference](#web-demo--inference)
 - [Testing](#testing)
 - [Roadmap](#roadmap)
-- [Contributing](#contributing)
 - [License](#license)
 - [Contact And Citation](#contact-and-citation)
 
@@ -533,23 +532,6 @@ Planned improvements:
 - Persist comparison-ready clustering results through a backend session or API if comparison should survive browser storage clearing or cross-device use.
 - Add dashboard screenshots under `screenshots/` and embed them in this README.
 - Add GitHub Actions for basic linting and tests.
-
-## Contributing
-
-Suggested contribution workflow:
-
-1. Create a branch named `feature/<short-name>` or `fix/<short-name>`.
-2. Run syntax checks before committing.
-3. Do not commit files from `data/` or `backup_data/`.
-4. Do not commit `.env`, virtual environments, cache files, or logs.
-5. Open a pull request with a clear description of the change, affected files, and verification steps.
-
-Current code style:
-
-- Python functions and variables use snake_case.
-- The main clustering class is currently named `Football_Player_Clustering`.
-- API routes return JSON with `status` plus either `message` or `data`.
-- The frontend uses vanilla JavaScript; avoid adding a frontend framework unless there is a clear need.
 
 ## License
 
