@@ -1,14 +1,15 @@
 # ScoutMetric Pro - Football Player Clustering Dashboard
 
 ![Python](https://img.shields.io/badge/Python-3.13-blue)
-![Framework](https://img.shields.io/badge/Framework-Flask%203.1-green)
-![ML](https://img.shields.io/badge/ML-scikit--learn%201.7-orange)
-![License](https://img.shields.io/badge/License-Not%20specified-lightgrey)
-![Last Commit](https://img.shields.io/badge/Last%20commit-Local%20repo%20not%20initialized-lightgrey)
+![Framework](<https://img.shields.io/badge/Framework-Flask%203.1-green>)
+![ML](<https://img.shields.io/badge/ML-scikit--learn%201.7-orange>)
+![License](<https://img.shields.io/badge/License-Not%20specified-lightgrey>)
+![Last Commit](<https://img.shields.io/badge/Last%20commit-Local%20repo%20not%20initialized-lightgrey>)
 
 ## Table Of Contents
 
 - [Overview](#overview)
+- [Dashboard Preview](#dashboard-preview)
 - [Key Features](#key-features)
 - [System Architecture](#system-architecture)
 - [Project Structure](#project-structure)
@@ -39,6 +40,22 @@ Important design decisions:
 - `RobustScaler` is used before clustering to reduce the impact of outliers in football performance data.
 - Clustering quality is evaluated with internal metrics because the project does not include ground-truth labels.
 - The web interface uses Flask, Jinja2, vanilla JavaScript, Tailwind CDN, and Chart.js, with chart rendering isolated in `app/static/js/chart.js`.
+
+## Dashboard Preview
+
+The application provides an interactive web interface for clustering analysis, model metric evaluation, and head-to-head player scouting:
+
+### 1. Main Clustering Dashboard
+
+Displays interactive scatter plots, optimal $K$ evaluation metrics (Elbow, Silhouette, Davies-Bouldin, Hybrid, BIC), radar attribute charts, and cluster summary distribution tables.
+
+![Main Clustering Dashboard](dashboard/cluster_dashboard.png)
+
+### 2. Player Comparison Dashboard
+
+Enables side-by-side comparison between two clustered players with radar metrics, pitch positioning, statistical breakdown, and similar player suggestions.
+
+![Player Comparison Dashboard](dashboard/compare_dashboard.png)
 
 ## Key Features
 
@@ -100,21 +117,21 @@ Output
   Player comparison view backed by the latest clustering result in browser localStorage
 ```
 
-| Component | Role |
-|---|---|
-| `app.py` | Entry point for the Flask development server at `http://127.0.0.1:5000`. |
-| `app/__init__.py` | Flask application factory and Blueprint registration. |
-| `app/routes.py` | Defines HTML routes and JSON API routes for parameters, preview data, clustering, and K evaluation. |
-| `app/templates/` | Jinja2 templates for the dashboard layout and chart sections. |
-| `app/static/js/main.js` | Handles UI state, API calls, form events, and delegates chart rendering to `ScoutMetricCharts`. |
-| `app/static/js/chart.js` | Contains Chart.js rendering logic for scatter charts, K-evaluation charts, radar charts, heatmaps, cluster summaries, and evaluation cards. |
-| `app/static/js/compare.js` | Reads the latest clustering result from browser localStorage and renders side-by-side player comparison, radar, pitch position, related players, and metric breakdowns. |
-| `clustering/football_player_clustering.py` | Core business logic for reading CSV data, filtering, feature engineering, scaling, clustering, and metrics. |
-| `clustering/optimal_k.py` | Helper functions for Elbow, Silhouette, Davies-Bouldin, and Hybrid K selection. |
-| `crawler/` | Selenium-based pipeline for team IDs, player IDs, and player stats from FotMob. |
-| `data_preprocessing/` | Scripts for data cleaning and percentage normalization. |
-| `data/` | Local CSV dataset. This directory is ignored by Git. |
-| `backup_data/` | Local backup of CSV datasets. This directory is ignored by Git. |
+| Component                                    | Role                                                                                                                                                                    |
+| -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `app.py`                                   | Entry point for the Flask development server at`http://127.0.0.1:5000`.                                                                                               |
+| `app/__init__.py`                          | Flask application factory and Blueprint registration.                                                                                                                   |
+| `app/routes.py`                            | Defines HTML routes and JSON API routes for parameters, preview data, clustering, and K evaluation.                                                                     |
+| `app/templates/`                           | Jinja2 templates for the dashboard layout and chart sections.                                                                                                           |
+| `app/static/js/main.js`                    | Handles UI state, API calls, form events, and delegates chart rendering to`ScoutMetricCharts`.                                                                        |
+| `app/static/js/chart.js`                   | Contains Chart.js rendering logic for scatter charts, K-evaluation charts, radar charts, heatmaps, cluster summaries, and evaluation cards.                             |
+| `app/static/js/compare.js`                 | Reads the latest clustering result from browser localStorage and renders side-by-side player comparison, radar, pitch position, related players, and metric breakdowns. |
+| `clustering/football_player_clustering.py` | Core business logic for reading CSV data, filtering, feature engineering, scaling, clustering, and metrics.                                                             |
+| `clustering/optimal_k.py`                  | Helper functions for Elbow, Silhouette, Davies-Bouldin, and Hybrid K selection.                                                                                         |
+| `crawler/`                                 | Selenium-based pipeline for team IDs, player IDs, and player stats from FotMob.                                                                                         |
+| `data_preprocessing/`                      | Scripts for data cleaning and percentage normalization.                                                                                                                 |
+| `data/`                                    | Local CSV dataset. This directory is ignored by Git.                                                                                                                    |
+| `backup_data/`                             | Local backup of CSV datasets. This directory is ignored by Git.                                                                                                         |
 
 ## Project Structure
 
@@ -127,6 +144,9 @@ Football_Player_Clustering/
 |-- requirements.txt                   # Python dependencies
 |-- app.py                             # Flask app entry point
 |-- __init__.py                        # Root package marker
+|-- dashboard/                         # Application interface preview screenshots
+|   |-- cluster_dashboard.png          # Main clustering dashboard interface
+|   `-- compare_dashboard.png          # Head-to-head player comparison interface
 |-- app/
 |   |-- __init__.py                    # Flask app factory
 |   |-- routes.py                      # Web routes and API routes
@@ -188,16 +208,16 @@ At the time of this review, the repository does not contain `test/`, `docs/`, `C
 
 ## System Requirements
 
-| Item | Requirement |
-|---|---|
-| Python | Verified with `Python 3.13.9`. |
-| Backend | Flask `>=3.1`. |
-| ML/Data | pandas, numpy, scikit-learn, kneed, scipy, matplotlib. |
-| Crawler | Google Chrome, Selenium, BeautifulSoup4, webdriver-manager. |
-| Frontend | A modern JavaScript-enabled browser. Tailwind, Chart.js, and Google Fonts are loaded via CDN. |
-| GPU/CUDA | Not required. The current algorithms run on CPU. |
-| RAM | 4 GB minimum for the current dataset; 8 GB recommended when crawling more leagues. |
-| OS | Developed on Windows. It should also run on macOS/Linux if Python and Chrome are installed correctly. |
+| Item     | Requirement                                                                                           |
+| -------- | ----------------------------------------------------------------------------------------------------- |
+| Python   | Verified with`Python 3.13.9`.                                                                       |
+| Backend  | Flask`>=3.1`.                                                                                       |
+| ML/Data  | pandas, numpy, scikit-learn, kneed, scipy, matplotlib.                                                |
+| Crawler  | Google Chrome, Selenium, BeautifulSoup4, webdriver-manager.                                           |
+| Frontend | A modern JavaScript-enabled browser. Tailwind, Chart.js, and Google Fonts are loaded via CDN.         |
+| GPU/CUDA | Not required. The current algorithms run on CPU.                                                      |
+| RAM      | 4 GB minimum for the current dataset; 8 GB recommended when crawling more leagues.                    |
+| OS       | Developed on Windows. It should also run on macOS/Linux if Python and Chrome are installed correctly. |
 
 ## Installation
 
@@ -247,18 +267,18 @@ Data source:
 
 League URLs currently defined by the crawler:
 
-| League | URL |
-|---|---|
-| Premier League | `https://www.fotmob.com/leagues/47/table/premier-league` |
-| La Liga | `https://www.fotmob.com/leagues/87/table/la-liga` |
-| Bundesliga | `https://www.fotmob.com/leagues/54/table/bundesliga` |
-| Serie A | `https://www.fotmob.com/leagues/55/table/serie-a` |
-| Ligue 1 | `https://www.fotmob.com/leagues/53/table/ligue-1` |
-| Eredivisie | `https://www.fotmob.com/en-GB/leagues/57/table/eredivisie` |
-| Liga Portugal | `https://www.fotmob.com/en-GB/leagues/61/table/liga-portugal` |
-| Super Lig | `https://www.fotmob.com/en-GB/leagues/71/table/super-lig` |
-| Premier | `https://www.fotmob.com/en-GB/leagues/64/table/premiership` |
-| Championship | `https://www.fotmob.com/en-GB/leagues/48/table/championship` |
+| League         | URL                                                             |
+| -------------- | --------------------------------------------------------------- |
+| Premier League | `https://www.fotmob.com/leagues/47/table/premier-league`      |
+| La Liga        | `https://www.fotmob.com/leagues/87/table/la-liga`             |
+| Bundesliga     | `https://www.fotmob.com/leagues/54/table/bundesliga`          |
+| Serie A        | `https://www.fotmob.com/leagues/55/table/serie-a`             |
+| Ligue 1        | `https://www.fotmob.com/leagues/53/table/ligue-1`             |
+| Eredivisie     | `https://www.fotmob.com/en-GB/leagues/57/table/eredivisie`    |
+| Liga Portugal  | `https://www.fotmob.com/en-GB/leagues/61/table/liga-portugal` |
+| Super Lig      | `https://www.fotmob.com/en-GB/leagues/71/table/super-lig`     |
+| Premier        | `https://www.fotmob.com/en-GB/leagues/64/table/premiership`   |
+| Championship   | `https://www.fotmob.com/en-GB/leagues/48/table/championship`  |
 
 Current local data in `data/player_stats/`:
 
@@ -333,29 +353,29 @@ data/
 
 The project does not currently use standalone configuration files such as `.yaml`, `.json`, `.toml`, or `.env.example`. Configuration values are defined directly in the source code.
 
-| Location | Parameter | Type | Default | Description |
-|---|---|---:|---|---|
-| `app.py` | `port` | int | `5000` | Flask development server port. |
-| `app.py` | `debug` | bool | `True` | Enables Flask debug mode for local development. |
-| `app.py` | `use_reloader` | bool | `False` | Keeps the development server in a single process, which is more stable when started from background PowerShell commands. |
-| `app/__init__.py` | `SECRET_KEY` | str | `your-secret-key` | Hard-coded Flask secret key; should be moved to an environment variable before deployment. |
-| `app/routes.py` | `POSITION_MAP` | list[str] | `Midfielder`, `Striker`, `Defender`, `Fullback`, `Winger` | Positions exposed by the UI/API. |
-| `app/routes.py` | `LEAGUE_MAP` | list[str] | `All League`, `Top 5 League`, `Premier League`, `La Liga`, `Serie A`, `Bundesliga`, `Ligue 1`, `Liga Portugal` | Leagues exposed by the UI/API. `Top 5 League` is limited to England, Spain, Italy, Germany, and France; `All League` includes every league present in the local CSV data. |
-| `app/routes.py` | `CRITERIA_MAP` | list[str] | `Style`, `Pressing`, `Duel` | Clustering criteria groups. |
-| `app/routes.py` | `ALGORITHM_MAP` | list[str] | `K-Means`, `DBSCAN`, `GMM` | Algorithms exposed by the UI/API. |
-| `app/routes.py` | `OPTIMAL_K_MAP` | list[str] | `Manual`, `Elbow`, `Silhouette Score`, `Davies-Bouldin`, `Hybrid` | K-selection methods for K-Means. |
-| `clustering/football_player_clustering.py` | `data/player_stats/{position}_stats.csv` | path | `data/player_stats` | CSV input path by position. |
-| `clustering/football_player_clustering.py` | `minutes threshold` | float | `max(Minutes played) / 2` | Filters out players below 50% of max minutes in the selected league. |
-| `clustering/football_player_clustering.py` | `RobustScaler` | estimator | `RobustScaler()` | Scaler applied before clustering. |
-| `clustering/football_player_clustering.py` | `KMeans.random_state` | int | `42` | Makes K-Means results more stable across runs. |
-| `clustering/football_player_clustering.py` | `KMeans.n_init` | int | `10` | Number of K-Means initializations. |
-| `clustering/football_player_clustering.py` | `DBSCAN.eps` | float | `0.5` | Neighborhood radius for DBSCAN. |
-| `clustering/football_player_clustering.py` | `DBSCAN.min_samples` | int | `5` | Minimum number of samples for a core point. |
-| `clustering/football_player_clustering.py` | `GMM.covariance_types` | list[str] | `full`, `tied`, `diag`, `spherical` | Covariance types tested when selecting GMM by BIC. |
-| `crawler/fotmob_crawl.py` | `base_output_dir` | str | `data` | Output directory for team and player IDs. |
-| `crawler/crawl_by_position.py` | `stats_output_dir` | str | `data/player_stats` | Output directory for player stats by position group. |
-| `crawler/crawl_by_position.py` | `current_league` | str | `liga_portugal` | League crawled when the script is run directly. |
-| `.gitignore` | `data/`, `backup_data/` | path | ignored | Prevents local datasets from being committed to GitHub. |
+| Location                                     | Parameter                                  |      Type | Default                                                                                                                        | Description                                                                                                                                                                  |
+| -------------------------------------------- | ------------------------------------------ | --------: | ------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `app.py`                                   | `port`                                   |       int | `5000`                                                                                                                       | Flask development server port.                                                                                                                                               |
+| `app.py`                                   | `debug`                                  |      bool | `True`                                                                                                                       | Enables Flask debug mode for local development.                                                                                                                              |
+| `app.py`                                   | `use_reloader`                           |      bool | `False`                                                                                                                      | Keeps the development server in a single process, which is more stable when started from background PowerShell commands.                                                     |
+| `app/__init__.py`                          | `SECRET_KEY`                             |       str | `your-secret-key`                                                                                                            | Hard-coded Flask secret key; should be moved to an environment variable before deployment.                                                                                   |
+| `app/routes.py`                            | `POSITION_MAP`                           | list[str] | `Midfielder`, `Striker`, `Defender`, `Fullback`, `Winger`                                                            | Positions exposed by the UI/API.                                                                                                                                             |
+| `app/routes.py`                            | `LEAGUE_MAP`                             | list[str] | `All League`, `Top 5 League`, `Premier League`, `La Liga`, `Serie A`, `Bundesliga`, `Ligue 1`, `Liga Portugal` | Leagues exposed by the UI/API.`Top 5 League` is limited to England, Spain, Italy, Germany, and France; `All League` includes every league present in the local CSV data. |
+| `app/routes.py`                            | `CRITERIA_MAP`                           | list[str] | `Style`, `Pressing`, `Duel`                                                                                              | Clustering criteria groups.                                                                                                                                                  |
+| `app/routes.py`                            | `ALGORITHM_MAP`                          | list[str] | `K-Means`, `DBSCAN`, `GMM`                                                                                               | Algorithms exposed by the UI/API.                                                                                                                                            |
+| `app/routes.py`                            | `OPTIMAL_K_MAP`                          | list[str] | `Manual`, `Elbow`, `Silhouette Score`, `Davies-Bouldin`, `Hybrid`                                                    | K-selection methods for K-Means.                                                                                                                                             |
+| `clustering/football_player_clustering.py` | `data/player_stats/{position}_stats.csv` |      path | `data/player_stats`                                                                                                          | CSV input path by position.                                                                                                                                                  |
+| `clustering/football_player_clustering.py` | `minutes threshold`                      |     float | `max(Minutes played) / 2`                                                                                                    | Filters out players below 50% of max minutes in the selected league.                                                                                                         |
+| `clustering/football_player_clustering.py` | `RobustScaler`                           | estimator | `RobustScaler()`                                                                                                             | Scaler applied before clustering.                                                                                                                                            |
+| `clustering/football_player_clustering.py` | `KMeans.random_state`                    |       int | `42`                                                                                                                         | Makes K-Means results more stable across runs.                                                                                                                               |
+| `clustering/football_player_clustering.py` | `KMeans.n_init`                          |       int | `10`                                                                                                                         | Number of K-Means initializations.                                                                                                                                           |
+| `clustering/football_player_clustering.py` | `DBSCAN.eps`                             |     float | `0.5`                                                                                                                        | Neighborhood radius for DBSCAN.                                                                                                                                              |
+| `clustering/football_player_clustering.py` | `DBSCAN.min_samples`                     |       int | `5`                                                                                                                          | Minimum number of samples for a core point.                                                                                                                                  |
+| `clustering/football_player_clustering.py` | `GMM.covariance_types`                   | list[str] | `full`, `tied`, `diag`, `spherical`                                                                                    | Covariance types tested when selecting GMM by BIC.                                                                                                                           |
+| `crawler/fotmob_crawl.py`                  | `base_output_dir`                        |       str | `data`                                                                                                                       | Output directory for team and player IDs.                                                                                                                                    |
+| `crawler/crawl_by_position.py`             | `stats_output_dir`                       |       str | `data/player_stats`                                                                                                          | Output directory for player stats by position group.                                                                                                                         |
+| `crawler/crawl_by_position.py`             | `current_league`                         |       str | `liga_portugal`                                                                                                              | League crawled when the script is run directly.                                                                                                                              |
+| `.gitignore`                               | `data/`, `backup_data/`                |      path | ignored                                                                                                                        | Prevents local datasets from being committed to GitHub.                                                                                                                      |
 
 ## Model Training
 
@@ -387,15 +407,15 @@ python -c "from clustering.football_player_clustering import Football_Player_Clu
 
 Main parameters:
 
-| Parameter | Applies to | Description |
-|---|---|---|
-| `position` | All models | Position group: `Midfielder`, `Striker`, `Defender`, `Fullback`, `Winger`. |
-| `league` | All models | League filter: `All League`, `Top 5 League`, `Premier League`, `La Liga`, `Serie A`, `Bundesliga`, `Ligue 1`, `Liga Portugal`. `Top 5 League` maps to Premier League, La Liga, Serie A, Bundesliga, and Ligue 1 only. |
-| `criteria` | All models | Feature engineering criteria: `Style`, `Pressing`, `Duel`. |
-| `k_method` | K-Means | `Manual`, `Elbow`, `Silhouette Score`, `Davies-Bouldin`, `Hybrid`. |
-| `manual_k` | K-Means/GMM | Number of clusters when manual selection is used. |
-| `eps` | DBSCAN | Neighborhood radius. |
-| `min_samples` | DBSCAN | Minimum number of points required to form a core point. |
+| Parameter       | Applies to  | Description                                                                                                                                                                                                                            |
+| --------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `position`    | All models  | Position group:`Midfielder`, `Striker`, `Defender`, `Fullback`, `Winger`.                                                                                                                                                    |
+| `league`      | All models  | League filter:`All League`, `Top 5 League`, `Premier League`, `La Liga`, `Serie A`, `Bundesliga`, `Ligue 1`, `Liga Portugal`. `Top 5 League` maps to Premier League, La Liga, Serie A, Bundesliga, and Ligue 1 only. |
+| `criteria`    | All models  | Feature engineering criteria:`Style`, `Pressing`, `Duel`.                                                                                                                                                                        |
+| `k_method`    | K-Means     | `Manual`, `Elbow`, `Silhouette Score`, `Davies-Bouldin`, `Hybrid`.                                                                                                                                                           |
+| `manual_k`    | K-Means/GMM | Number of clusters when manual selection is used.                                                                                                                                                                                      |
+| `eps`         | DBSCAN      | Neighborhood radius.                                                                                                                                                                                                                   |
+| `min_samples` | DBSCAN      | Minimum number of points required to form a core point.                                                                                                                                                                                |
 
 Expected runtime with the current dataset on a typical laptop CPU is a few seconds per clustering run. Crawling can take much longer because Selenium visits individual FotMob pages.
 
@@ -403,11 +423,11 @@ Expected runtime with the current dataset on a typical laptop CPU is a few secon
 
 The following metrics were reproduced from the current code and local `data/player_stats/` dataset.
 
-| Configuration | Algorithm | Rows After Filtering | K/Clusters | Noise | Silhouette | Davies-Bouldin | Calinski-Harabasz | Inertia | BIC | AIC |
-|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| Midfielder / Top 5 League / Style | K-Means | 274 | 3 | 0 | 0.381446 | 0.866879 | 225.978144 | 108.622446 | N/A | N/A |
-| Midfielder / Top 5 League / Style | GMM | 274 | 2 | 0 | 0.376706 | 1.044755 | 189.052386 | N/A | 1179.538841 | 1147.020688 |
-| Defender / Premier League / Duel | K-Means | 45 | 2 | 0 | 0.572600 | 0.547021 | 95.182046 | 11.119707 | N/A | N/A |
+| Configuration                     | Algorithm | Rows After Filtering | K/Clusters | Noise | Silhouette | Davies-Bouldin | Calinski-Harabasz |    Inertia |         BIC |         AIC |
+| --------------------------------- | --------- | -------------------: | ---------: | ----: | ---------: | -------------: | ----------------: | ---------: | ----------: | ----------: |
+| Midfielder / Top 5 League / Style | K-Means   |                  274 |          3 |     0 |   0.381446 |       0.866879 |        225.978144 | 108.622446 |         N/A |         N/A |
+| Midfielder / Top 5 League / Style | GMM       |                  274 |          2 |     0 |   0.376706 |       1.044755 |        189.052386 |        N/A | 1179.538841 | 1147.020688 |
+| Defender / Premier League / Duel  | K-Means   |                   45 |          2 |     0 |   0.572600 |       0.547021 |         95.182046 |  11.119707 |         N/A |         N/A |
 
 Reproduce the table above:
 
@@ -445,15 +465,15 @@ Player comparison workflow:
 
 API endpoints:
 
-| Method | Endpoint | Description | Request | Response |
-|---|---|---|---|---|
-| `GET` | `/` | Renders the main dashboard. | No body. | HTML page. |
-| `GET` | `/compare` | Renders the player comparison page. It requires a previous clustering run in the same browser session. | No body. | HTML page using localStorage data. |
-| `GET` | `/api/get_params` | Returns available positions, leagues, criteria, algorithms, and K methods. | No body. | JSON object with `positions`, `leagues`, `criteria`, `algorithms`, `k_methods`. |
-| `GET` | `/get_criteria_options/<position>` | Returns valid criteria for a position. | Path parameter `position`. | JSON array, for example `["Style", "Pressing", "Duel"]`. |
-| `POST` | `/api/load_raw_data` | Previews engineered feature data after filtering. | JSON with `position`, `league`, `criteria`. | JSON with `status`, `data`, `description`. |
-| `POST` | `/api/cluster` | Runs K-Means, DBSCAN, or GMM. | JSON with `position`, `league`, `criteria`, `algorithm`, `k_method`, `k`. | JSON with `status`, `data`, `component_features`, `cluster_components`, `evaluation`, `cluster_count`, `min_minutes_threshold`, `description`. |
-| `POST` | `/api/k_evaluation` | Returns Elbow, Silhouette, Hybrid, and GMM BIC chart data. | JSON with `position`, `league`, `criteria`, `k_method`. | JSON with `status`, `data`, `description`. |
+| Method   | Endpoint                             | Description                                                                                            | Request                                                                              | Response                                                                                                                                                      |
+| -------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `GET`  | `/`                                | Renders the main dashboard.                                                                            | No body.                                                                             | HTML page.                                                                                                                                                    |
+| `GET`  | `/compare`                         | Renders the player comparison page. It requires a previous clustering run in the same browser session. | No body.                                                                             | HTML page using localStorage data.                                                                                                                            |
+| `GET`  | `/api/get_params`                  | Returns available positions, leagues, criteria, algorithms, and K methods.                             | No body.                                                                             | JSON object with`positions`, `leagues`, `criteria`, `algorithms`, `k_methods`.                                                                      |
+| `GET`  | `/get_criteria_options/<position>` | Returns valid criteria for a position.                                                                 | Path parameter`position`.                                                          | JSON array, for example`["Style", "Pressing", "Duel"]`.                                                                                                     |
+| `POST` | `/api/load_raw_data`               | Previews engineered feature data after filtering.                                                      | JSON with`position`, `league`, `criteria`.                                     | JSON with`status`, `data`, `description`.                                                                                                               |
+| `POST` | `/api/cluster`                     | Runs K-Means, DBSCAN, or GMM.                                                                          | JSON with`position`, `league`, `criteria`, `algorithm`, `k_method`, `k`. | JSON with`status`, `data`, `component_features`, `cluster_components`, `evaluation`, `cluster_count`, `min_minutes_threshold`, `description`. |
+| `POST` | `/api/k_evaluation`                | Returns Elbow, Silhouette, Hybrid, and GMM BIC chart data.                                             | JSON with`position`, `league`, `criteria`, `k_method`.                       | JSON with`status`, `data`, `description`.                                                                                                               |
 
 Example: get available parameters:
 
@@ -530,9 +550,42 @@ Planned improvements:
 - Add pytest coverage for data preparation, feature engineering, clustering, and Flask APIs.
 - Expose DBSCAN parameters, Goalkeeper, and Hierarchical clustering in the UI if the logic is completed.
 - Persist comparison-ready clustering results through a backend session or API if comparison should survive browser storage clearing or cross-device use.
-- Add dashboard screenshots under `screenshots/` and embed them in this README.
+
+- [X] Add dashboard screenshots under `dashboard/` and embed them in this README.
+
 - Add GitHub Actions for basic linting and tests.
+
+## Contributing
+
+Suggested contribution workflow:
+
+1. Create a branch named `feature/<short-name>` or `fix/<short-name>`.
+2. Run syntax checks before committing.
+3. Do not commit files from `data/` or `backup_data/`.
+4. Do not commit `.env`, virtual environments, cache files, or logs.
+5. Open a pull request with a clear description of the change, affected files, and verification steps.
+
+Current code style:
+
+- Python functions and variables use snake_case.
+- The main clustering class is currently named `Football_Player_Clustering`.
+- API routes return JSON with `status` plus either `message` or `data`.
+- The frontend uses vanilla JavaScript; avoid adding a frontend framework unless there is a clear need.
 
 ## License
 
 The repository does not currently include a `LICENSE` file, so the official license is not declared. Before publishing the project on GitHub, add a license file. MIT License is a common choice for portfolio and open-source projects.
+
+## Contact And Citation
+
+Author name, email, and GitHub profile are not declared in the current codebase.
+
+If this project is used in an academic context, cite it as:
+
+```bibtex
+@software{scoutmetric_pro,
+  title = {ScoutMetric Pro: Football Player Clustering Dashboard},
+  year = {2026},
+  note = {Flask and scikit-learn project for football player clustering}
+}
+```
